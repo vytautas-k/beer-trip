@@ -1,0 +1,56 @@
+{% extends '::base.html.twig' %}
+
+{% set startPoint = start.coordinates|join(',') %}
+
+{% block body %}
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.0.1/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+
+    <div id="map"></div>
+
+    <script>
+        $(document).ready(function() {
+            var map = L.map('map').setView([{{ startPoint }}], 13);
+
+            L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw', {
+                maxZoom: 18,
+                id: 'mapbox.streets'
+            }).addTo(map);
+
+            var coords = [L.latLng({{ startPoint }})];
+
+            {% for brewery in breweries %}
+                {% set coords = brewery.coordinates|join(',') %}
+
+                L.marker([{{ coords }}]).addTo(map);
+                coords.push(L.latLng({{ coords }}));
+            {% endfor %}
+
+            coords.push(L.latLng({{ startPoint }}));
+
+            L.circle([{{ startPoint }}], 300, {
+                color: 'red',
+                fillColor: '#f03',
+                fillOpacity: 0.5
+            }).addTo(map).bindPopup("Helicopter launchpad!");
+
+            var line = L.polyline(coords);
+            map.fitBounds(line.getBounds());
+            map.addLayer(line);
+        });
+    </script>
+
+{% endblock body %}
+
+{% block stylesheets %}
+    {% stylesheets '@App/Resources/public/css/*' %}
+        <link rel="stylesheet" href="{{ asset_url }}" />
+    {% endstylesheets %}
+{% endblock %}
+
+{% block javascripts %}
+    {% javascripts '@App/Resources/public/js/*' %}
+    <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

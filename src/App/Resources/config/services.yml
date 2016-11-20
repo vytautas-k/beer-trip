@@ -1,0 +1,6 @@
+services:
+    distance:
+        class: App\Services\Distance
+        arguments:
+            - '%travel_distance%'
+            - '%earth_radius%'
