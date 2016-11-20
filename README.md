@@ -13,6 +13,8 @@ different types of beer can be allocated console command can be launched.
 php app/console beertrip:calculate {lat} {lng}
 ```
 
+![Console Command](http://kavaliauskas.net/github/beer-trip-console.jpg "Console Command")
+
 ### Web page (map)
 
 To view map with marked breweries and trip route web page can be opened.
@@ -20,6 +22,8 @@ To view map with marked breweries and trip route web page can be opened.
 ```
 http://localhost:8080/trip/{lat}/{lng}
 ```
+
+![Web view](http://kavaliauskas.net/github/beer-trip-map.jpg "Web view")
 
 In both ways {lat} and {lng} represents values of starting point latitude and longitude.
 
